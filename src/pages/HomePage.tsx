@@ -125,8 +125,8 @@ export function HomePage() {
             <span>Apache-2.0</span>
             <span>Windows best experience</span>
             <span>macOS/Linux partial</span>
-            <span>Offline-capable</span>
-            <span>No API key needed</span>
+            <span>Online + offline</span>
+            <span>Cloud + local modes</span>
             <span>Safety-gated</span>
           </div>
 
@@ -146,7 +146,7 @@ export function HomePage() {
           <div className="hero-offline-note" aria-label="Offline Shell support">
             <WifiOff size={18} />
             <span>
-              <strong>Offline voice available.</strong> Run local mode without API keys or internet; connect providers only when cloud models are needed.
+              <strong>Online and local control.</strong> Connect cloud providers when needed, or use local voice and core workflows without API keys or internet.
             </span>
           </div>
 
@@ -186,28 +186,6 @@ export function HomePage() {
               </Link>
             </div>
 
-            <div className="hero-trust-grid" aria-label="Download trust signals">
-              <div>
-                <CheckCircle2 />
-                <span>Windows setup</span>
-                <strong>{releaseContent.assetFound ? 'EXE resolved' : 'Release fallback'}</strong>
-              </div>
-              <div>
-                <ShieldCheck />
-                <span>Integrity</span>
-                <strong>{releaseContent.digest.startsWith('sha256:') ? 'SHA256 digest' : 'Release metadata'}</strong>
-              </div>
-              <div>
-                <ExternalLink />
-                <span>Source</span>
-                <strong>GitHub auditable</strong>
-              </div>
-              <div className="offline-trust-card">
-                <WifiOff />
-                <span>Offline mode</span>
-                <strong>No API key needed</strong>
-              </div>
-            </div>
           </div>
         </div>
 

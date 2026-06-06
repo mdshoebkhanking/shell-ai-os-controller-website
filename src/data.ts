@@ -99,7 +99,7 @@ export const screenStates: ScreenState[] = [
 
 export const featureGroups = [
   { title: 'Chat', icon: TerminalSquare, copy: 'Text-first assistant flow with tool routing and grounded responses.' },
-  { title: 'Voice', icon: Mic2, copy: 'Offline/local voice path plus provider fallback and mic readiness states.' },
+  { title: 'Voice', icon: Mic2, copy: 'Online provider voice plus offline/local voice path and mic readiness states.' },
   { title: '460+ guarded tools', icon: Hammer, copy: 'A catalogued Python tool surface behind a guarded execution gateway.' },
   { title: 'Desktop control', icon: AppWindow, copy: 'Apps, windows, screenshots, clipboard, keyboard, and mouse automation.' },
   { title: 'Windows control', icon: MonitorCog, copy: 'Best PC-control path with pywinauto, Windows-MCP, pywin32, and PyAutoGUI fallbacks.' },
@@ -179,6 +179,6 @@ export const docsSteps = [
     title: 'API setup',
     icon: Brain,
     command: 'cp .env.example .env',
-    copy: 'Provider keys are optional for local/offline mode. Add keys only for cloud models and third-party services.'
+    copy: 'Use provider keys for online cloud models and third-party services. Local/offline mode can run without keys.'
   }
 ]
