@@ -384,6 +384,18 @@ main::before {
   padding: 8px 10px;
 }
 
+@media (min-width: 821px) {
+  .badge-row {
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    flex-wrap: nowrap;
+  }
+
+  .badge-row span {
+    white-space: nowrap;
+  }
+}
+
 .eyebrow {
   color: var(--site-cyan);
   margin: 0 0 12px;
@@ -4095,6 +4107,17 @@ p {
   .legal-policy-grid,
   .legal-link-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1080px) {
+  .badge-row {
+    gap: 6px;
+  }
+
+  .badge-row span {
+    padding: 7px 8px;
+    font-size: 9px;
   }
 }
 
