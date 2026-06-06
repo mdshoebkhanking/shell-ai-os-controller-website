@@ -99,7 +99,7 @@ export const screenStates: ScreenState[] = [
 
 export const featureGroups = [
   { title: 'Chat', icon: TerminalSquare, copy: 'Text-first assistant flow with tool routing and grounded responses.' },
-  { title: 'Voice', icon: Mic2, copy: 'Gemini Live path plus backend/local fallbacks and mic readiness states.' },
+  { title: 'Voice', icon: Mic2, copy: 'Offline/local voice path plus provider fallback and mic readiness states.' },
   { title: '460+ guarded tools', icon: Hammer, copy: 'A catalogued Python tool surface behind a guarded execution gateway.' },
   { title: 'Desktop control', icon: AppWindow, copy: 'Apps, windows, screenshots, clipboard, keyboard, and mouse automation.' },
   { title: 'Windows control', icon: MonitorCog, copy: 'Best PC-control path with pywinauto, Windows-MCP, pywin32, and PyAutoGUI fallbacks.' },
@@ -119,66 +119,66 @@ export const featureGroups = [
 export const platformCards = [
   {
     title: 'Windows',
-    label: 'Best experience',
+    label: 'Windows Installer',
     icon: CheckCircle2,
     points: [
-      'One-click setup EXE',
-      'Bundled ShellAI.exe',
-      'Start Menu shortcut',
-      'Optional desktop/startup shortcuts',
-      'pywinauto and Windows-MCP support',
-      'PyAutoGUI/pywin32 fallback'
+      'Download the latest setup EXE',
+      'Best supported install path',
+      'Windows 10/11 focused',
+      'Desktop control support included'
     ]
   },
   {
     title: 'macOS',
-    label: 'Partial support',
+    label: 'Installer coming soon',
     icon: NotebookTabs,
     points: [
-      'Source/helper launch',
-      'Web UI, chat, docs, and dev workflows',
-      'Many Python tools',
-      'Camera/mic permissions may be needed',
-      'Windows control unavailable'
+      'macOS installer planned',
+      'Developer/source setup for now',
+      'Web UI and docs workflows',
+      'Some permissions may be needed'
     ]
   },
   {
     title: 'Linux',
-    label: 'Partial support',
+    label: 'CLI available',
     icon: Network,
     points: [
+      'ShellAI Core CLI path',
       'Source/helper launch',
-      'ShellAI Core CLI',
-      'Web UI, chat, diagnostics, dev workflows',
-      'Desktop automation depends on local environment',
-      'Windows-MCP/pywinauto unavailable'
+      'Diagnostics and dev workflows',
+      'Desktop automation depends on environment'
     ]
   }
 ]
 
 export const docsSteps = [
   {
+    id: 'windows-install',
     title: 'Windows install',
     icon: FileArchive,
     command: 'Download latest setup EXE, run it, then open ShellAI.exe',
     copy: 'This is the intended first-class path for non-technical users.'
   },
   {
+    id: 'macos-helper',
     title: 'macOS source helper',
     icon: GalleryHorizontalEnd,
     command: 'chmod +x ONE_CLICK_INSTALL.command start_shellai.command && ./ONE_CLICK_INSTALL.command',
     copy: 'Use helper scripts for Web UI, docs, chat, and development workflows.'
   },
   {
+    id: 'linux-cli',
     title: 'Linux source helper',
     icon: Phone,
     command: 'chmod +x start_shellai.sh repair_shellai.sh && ./start_shellai.sh',
     copy: 'Automation support varies by local Wayland/X11 and package environment.'
   },
   {
+    id: 'api-setup',
     title: 'API setup',
     icon: Brain,
     command: 'cp .env.example .env',
-    copy: 'Set provider keys locally. Never upload .env or paste secrets into public logs.'
+    copy: 'Provider keys are optional for local/offline mode. Add keys only for cloud models and third-party services.'
   }
 ]

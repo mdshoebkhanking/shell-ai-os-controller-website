@@ -122,6 +122,10 @@ export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
             <span>Diagnostics</span>
             <strong>Readiness, logs, repair hints, and traceable results.</strong>
           </div>
+          <div className="offline-proof-card">
+            <span>Offline voice</span>
+            <strong>Local voice and core workflows can run without internet or API keys.</strong>
+          </div>
           <div>
             <span>Windows-first</span>
             <strong>One installer, bundled app, honest macOS/Linux support.</strong>

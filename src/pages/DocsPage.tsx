@@ -18,7 +18,7 @@ export function DocsPage() {
         {docsSteps.map((step) => {
           const Icon = step.icon
           return (
-            <article key={step.title} className="doc-card">
+            <article key={step.title} id={step.id} className="doc-card">
               <Icon />
               <h2>{step.title}</h2>
               <p>{step.copy}</p>

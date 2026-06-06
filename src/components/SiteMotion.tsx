@@ -13,6 +13,7 @@ const revealSelector = [
   '.desktop-stack',
   '.routing-system',
   '.pipeline-node',
+  '.routing-stage',
   '.platform-card',
   '.gate',
   '.release-card',

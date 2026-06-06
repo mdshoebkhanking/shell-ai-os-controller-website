@@ -14,12 +14,12 @@ import {
   Network,
   ShieldAlert,
   ShieldCheck,
-  TerminalSquare
+  TerminalSquare,
+  WifiOff
 } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { LaptopMockup, LaptopStory } from '../components/LaptopMockup'
-import { ReleaseDownloadCard } from '../components/ReleaseDownloadCard'
 import { TubesBackground } from '../components/TubesBackground'
 import { githubRepoUrl, platformCards, screenStates } from '../data'
 import { useLatestReleaseContent } from '../release'
@@ -34,88 +34,77 @@ const desktopWorkflowLayers = [
   { label: 'Memory', detail: 'Recall', Icon: Brain }
 ]
 
-const platformMeta: Record<string, { depth: string; score: string; status: string; summary: string; chips: string[] }> = {
-  Windows: {
-    depth: '96%',
-    score: '96',
-    status: 'Full desktop path',
-    summary: 'Installer, shortcuts, native Windows automation, and strongest PC-control coverage.',
-    chips: ['Setup EXE', 'MCP', 'pywinauto']
-  },
-  macOS: {
-    depth: '64%',
-    score: '64',
-    status: 'Source helper path',
-    summary: 'Best for Web UI, chat, docs, voice, and development workflows with partial automation.',
-    chips: ['Web UI', 'Voice', 'Tools']
-  },
-  Linux: {
-    depth: '58%',
-    score: '58',
-    status: 'Dev workflow path',
-    summary: 'Strong for CLI, diagnostics, RAG, and local tooling where desktop automation varies.',
-    chips: ['CLI', 'RAG', 'Diagnostics']
-  }
-}
-
-const routingSteps = [
+const routingStages = [
   {
     id: '01',
-    title: 'User input',
-    detail: 'Chat, voice, Telegram, or CLI request enters the control surface.',
-    signal: 'Intent captured',
-    Icon: TerminalSquare
+    title: 'Input surfaces',
+    detail: 'Chat, voice, Telegram, or CLI request enters the control surface with source context.',
+    signal: 'Intent',
+    Icon: TerminalSquare,
+    points: ['Chat / voice / Telegram / CLI', 'Workspace state', 'Command source']
   },
   {
     id: '02',
-    title: 'Shell surfaces',
-    detail: 'The UI normalizes context, active workspace state, and command source.',
-    signal: 'Context frame',
-    Icon: AppWindow
+    title: 'Router + bridge',
+    detail: 'Shell normalizes context, then routes intent through the UI bridge and natural-language router.',
+    signal: 'Route',
+    Icon: Network,
+    points: ['QWebChannel + Shell Hub', 'Natural router', 'Context frame']
   },
   {
     id: '03',
-    title: 'QWebChannel + Shell Hub',
-    detail: 'Frontend and backend exchange structured events through the bridge.',
-    signal: 'Runtime bridge',
-    Icon: Network
+    title: 'Tool gateway',
+    detail: 'Parameters, ownership, risk level, dry-run expectations, and safety policy are checked first.',
+    signal: 'Gate',
+    Icon: ShieldCheck,
+    points: ['Tool contract', 'SAFE / ASK / BLOCK', 'Runtime policy']
   },
   {
     id: '04',
-    title: 'Natural router',
-    detail: 'Intent is classified into answer, tool call, automation, or memory path.',
-    signal: 'Route selected',
-    Icon: Brain
-  },
-  {
-    id: '05',
-    title: 'Tool gateway',
-    detail: 'Parameters, permissions, dry-run expectations, and tool ownership are checked.',
-    signal: 'Tool contract',
-    Icon: Boxes
-  },
-  {
-    id: '06',
-    title: 'Safety policy',
-    detail: 'Actions are marked SAFE, ASK, BLOCK, or TRACE before execution.',
-    signal: 'Guard state',
-    Icon: ShieldCheck
-  },
-  {
-    id: '07',
-    title: 'Local execution',
-    detail: 'Shell runs local tools, desktop automation, APIs, browser wrappers, or scripts.',
-    signal: 'Controlled run',
-    Icon: Layers3
-  },
-  {
-    id: '08',
-    title: 'Result + memory',
-    detail: 'The user gets output, logs, trace, diagnostics, and optional recall updates.',
-    signal: 'Audited result',
-    Icon: Activity
+    title: 'Result + trace',
+    detail: 'Shell returns output, logs, diagnostics, and optional memory updates after controlled execution.',
+    signal: 'Result',
+    Icon: Activity,
+    points: ['Local execution', 'Logs + diagnostics', 'Optional memory']
   }
 ]
+
+const platformDetails: Record<
+  string,
+  {
+    status: string
+    path: string
+    summary: string
+    marker: string
+    action: string
+    href: string
+  }
+> = {
+  Windows: {
+    status: 'Best supported',
+    path: 'Setup EXE path',
+    summary: 'Use the Windows installer when you want the strongest desktop-control path and the cleanest first run.',
+    marker: 'EXE',
+    action: 'Download Windows EXE',
+    href: '#download'
+  },
+  macOS: {
+    status: 'Installer coming soon',
+    path: 'Source helper path',
+    summary: 'Use helper scripts for Web UI, docs, chat, and development workflows while installer support is planned.',
+    marker: 'Soon',
+    action: 'macOS helper docs',
+    href: '/docs#macos-helper'
+  },
+  Linux: {
+    status: 'CLI available',
+    path: 'ShellAI Core CLI',
+    summary: 'Use the CLI/source path for diagnostics, local dev workflows, and environments where automation varies.',
+    marker: 'CLI',
+    action: 'Open Linux CLI',
+    href: '/docs#linux-cli'
+  }
+}
 
 export function HomePage() {
   const releaseContent = useLatestReleaseContent()
@@ -128,7 +117,7 @@ export function HomePage() {
 
   return (
     <main>
-      <section className="hero-section">
+      <section id="download" className="hero-section">
         <TubesBackground className="hero-tubes-layer" />
         <div className="hero-copy">
           <div className="badge-row">
@@ -136,7 +125,8 @@ export function HomePage() {
             <span>Apache-2.0</span>
             <span>Windows best experience</span>
             <span>macOS/Linux partial</span>
-            <span>Local-first</span>
+            <span>Offline-capable</span>
+            <span>No API key needed</span>
             <span>Safety-gated</span>
           </div>
 
@@ -153,6 +143,12 @@ export function HomePage() {
             An open-source AI desktop control layer for chat, voice, tools,
             automation, memory, agents, diagnostics, and safe local workflows.
           </p>
+          <div className="hero-offline-note" aria-label="Offline Shell support">
+            <WifiOff size={18} />
+            <span>
+              <strong>Offline voice available.</strong> Run local mode without API keys or internet; connect providers only when cloud models are needed.
+            </span>
+          </div>
 
           <div className="hero-download-cluster">
             <div className="hero-actions">
@@ -180,6 +176,10 @@ export function HomePage() {
                 <ExternalLink size={18} />
                 View GitHub
               </a>
+              <Link to="/docs#linux-cli" className="secondary-action linux-cli-action">
+                <TerminalSquare size={18} />
+                Linux CLI
+              </Link>
               <Link to="/docs" className="secondary-action">
                 <BookOpen size={18} />
                 Read Docs
@@ -201,6 +201,11 @@ export function HomePage() {
                 <ExternalLink />
                 <span>Source</span>
                 <strong>GitHub auditable</strong>
+              </div>
+              <div className="offline-trust-card">
+                <WifiOff />
+                <span>Offline mode</span>
+                <strong>No API key needed</strong>
               </div>
             </div>
           </div>
@@ -295,23 +300,35 @@ export function HomePage() {
 
         <div className="routing-system" aria-label="Shell request routing map">
           <div className="routing-system-grid" />
-          <div className="routing-rail" />
-          <div className="routing-terminal routing-terminal-input">Input</div>
-          <div className="routing-terminal routing-terminal-output">Result</div>
+          <div className="routing-flow" aria-hidden="true">
+            <span>Input</span>
+            <i />
+            <span>Route</span>
+            <i />
+            <span>Gate</span>
+            <i />
+            <span>Result</span>
+          </div>
 
-          <div className="pipeline">
-            {routingSteps.map((step) => {
-              const Icon = step.Icon
+          <div className="routing-stage-grid">
+            {routingStages.map((stage) => {
+              const Icon = stage.Icon
 
               return (
-                <article key={step.id} className="pipeline-node">
-                  <div className="pipeline-node-top">
-                    <span>{step.id}</span>
+                <article key={stage.id} className="routing-stage">
+                  <div className="routing-stage-head">
                     <Icon />
+                    <div>
+                      <span>{stage.id} / {stage.signal}</span>
+                      <strong>{stage.title}</strong>
+                    </div>
                   </div>
-                  <strong>{step.title}</strong>
-                  <p>{step.detail}</p>
-                  <small>{step.signal}</small>
+                  <p>{stage.detail}</p>
+                  <ul>
+                    {stage.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
                 </article>
               )
             })}
@@ -322,17 +339,25 @@ export function HomePage() {
       <section className="platform-section">
         <div className="section-heading">
           <p className="eyebrow">Platform Story</p>
-          <h2>Windows first, honest cross-platform support.</h2>
+          <h2>Choose the right Shell path for your machine.</h2>
         </div>
         <div className="platform-grid">
           {platformCards.map((platform) => {
             const Icon = platform.icon
-            const meta = platformMeta[platform.title]
+            const details = platformDetails[platform.title]
+            const cta = (
+              <span className="platform-cta-content">
+                {details.action}
+                <ArrowRight size={15} />
+              </span>
+            )
 
             return (
               <article
                 key={platform.title}
-                className={platform.title === 'Windows' ? 'platform-card primary' : 'platform-card'}
+                className={`platform-card platform-card-${platform.title.toLowerCase()}${
+                  platform.title === 'Windows' ? ' primary' : ''
+                }`}
               >
                 <div className="platform-card-top">
                   <div className="platform-title-lockup">
@@ -342,32 +367,16 @@ export function HomePage() {
                       <h3>{platform.title}</h3>
                     </div>
                   </div>
-
-                  {meta && (
-                    <div className="platform-score" aria-label={`${platform.title} support score ${meta.score}`}>
-                      <strong>{meta.score}</strong>
-                      <small>%</small>
-                    </div>
-                  )}
+                  <div className="platform-marker" aria-label={`${platform.title} status ${details.marker}`}>
+                    <strong>{details.marker}</strong>
+                  </div>
                 </div>
 
-                {meta && (
-                  <div className="platform-support">
-                    <div>
-                      <span>Support profile</span>
-                      <strong>{meta.status}</strong>
-                      <p>{meta.summary}</p>
-                    </div>
-                    <div className="platform-meter" aria-hidden="true">
-                      <i style={{ '--level': meta.depth } as CSSProperties} />
-                    </div>
-                    <div className="platform-chip-row">
-                      {meta.chips.map((chip) => (
-                        <small key={chip}>{chip}</small>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <div className="platform-profile">
+                  <span>{details.status}</span>
+                  <strong>{details.path}</strong>
+                  <p>{details.summary}</p>
+                </div>
 
                 <ul>
                   {platform.points.map((point) => (
@@ -377,6 +386,16 @@ export function HomePage() {
                     </li>
                   ))}
                 </ul>
+
+                {details.href.startsWith('#') ? (
+                  <a href={details.href} className="platform-cta">
+                    {cta}
+                  </a>
+                ) : (
+                  <Link to={details.href} className="platform-cta">
+                    {cta}
+                  </Link>
+                )}
               </article>
             )
           })}
@@ -416,8 +435,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <ReleaseDownloadCard />
-
       <section className="final-cta">
         <Boxes className="cta-icon" />
         <h2>Control your workspace with AI, safely.</h2>
@@ -435,15 +452,43 @@ export function HomePage() {
         </div>
       </section>
 
-      <footer className="home-legal-footer" aria-label="Shell AI legal links">
-        <div>
-          <strong>Shell AI OS Controller</strong>
-          <span>Open-source AI desktop control layer. Review policies before public or team deployment.</span>
+      <footer className="home-legal-footer" aria-label="Shell AI footer">
+        <span className="footer-watermark" aria-hidden="true">SHELL</span>
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <strong>Shell AI OS Controller</strong>
+            <span>Open-source AI desktop control layer for safe local workflows.</span>
+            <small>Apache-2.0</small>
+          </div>
+
+          <nav aria-label="Product links">
+            <h3>Product</h3>
+            <a href="#download">Download</a>
+            <a href="#features">Features</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#safety">Safety</a>
+          </nav>
+
+          <nav aria-label="Resources links">
+            <h3>Resources</h3>
+            <Link to="/docs">Docs</Link>
+            <a href={githubRepoUrl} target="_blank" rel="noreferrer">GitHub</a>
+            <a href={`${githubRepoUrl}/releases`} target="_blank" rel="noreferrer">Releases</a>
+            <a href={`${githubRepoUrl}/issues`} target="_blank" rel="noreferrer">Issues</a>
+          </nav>
+
+          <nav aria-label="Legal links">
+            <h3>Legal</h3>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms & Conditions</Link>
+            <a href={`${githubRepoUrl}/blob/main/LICENSE`} target="_blank" rel="noreferrer">License</a>
+          </nav>
         </div>
-        <nav>
-          <Link to="/privacy">Privacy Policy</Link>
-          <Link to="/terms">Terms & Conditions</Link>
-        </nav>
+
+        <div className="footer-bottom">
+          <span>© 2026 Shell AI OS Controller</span>
+          <span>Windows installer · macOS coming soon · Linux CLI</span>
+        </div>
       </footer>
     </main>
   )
