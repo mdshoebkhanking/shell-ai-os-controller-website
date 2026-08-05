@@ -299,7 +299,7 @@ export function HomePage() {
   }
 
   return (
-    <main>
+    <main id="main-content">
       <nav className="home-section-rail" aria-label="Home section navigation">
         {homeRailItems.map((item) => {
           const Icon = item.Icon
@@ -433,8 +433,8 @@ export function HomePage() {
           <p className="eyebrow">Positioning</p>
           <h2 className="word-split-heading" aria-label="Not an OS. A control layer over your OS.">
             {'Not an OS. A control layer over your OS.'.split(' ').map((word, index) => (
-              <span key={`${word}-${index}`} className="word-split-word" aria-hidden="true">
-                {word}{' '}
+              <span key={`${word}-${index}`} aria-hidden="true">
+                <span className="word-split-word">{word}</span>{' '}
               </span>
             ))}
           </h2>
@@ -627,7 +627,7 @@ export function HomePage() {
                   <div className="review-header">
                     <div className="review-avatar">
                       {review.avatar ? (
-                        <img src={review.avatar} alt={review.name} className="review-avatar-img" />
+                        <img src={review.avatar} alt={review.name} className="review-avatar-img" loading="lazy" decoding="async" />
                       ) : (
                         review.name.charAt(0)
                       )}

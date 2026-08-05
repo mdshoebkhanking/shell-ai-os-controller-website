@@ -89,7 +89,7 @@ export function DocsPage() {
   const releaseContent = useLatestReleaseContent()
 
   return (
-    <main className="subpage">
+    <main id="main-content" className="subpage">
       <section className="subpage-hero">
         <p className="eyebrow">Docs</p>
         <h1>Install Shell without guessing.</h1>

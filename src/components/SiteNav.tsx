@@ -37,11 +37,13 @@ export function SiteNav() {
         {/* Center: Desktop Navigation links */}
         <div className="nav-center-links">
           {navItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className={isActive(item.href) ? 'is-active' : undefined}
-            >
+              <Link
+                key={item.label}
+                to={item.href}
+                className={isActive(item.href) ? 'is-active' : undefined}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                onClick={() => setOpen(false)}
+              >
               {item.label}
             </Link>
           ))}
@@ -71,7 +73,8 @@ export function SiteNav() {
               <Link
                 key={item.label}
                 to={item.href}
-                className={isActive(item.href) ? 'is-active' : undefined}
+              className={isActive(item.href) ? 'is-active' : undefined}
+              aria-current={isActive(item.href) ? 'page' : undefined}
                 onClick={() => setOpen(false)}
               >
                 {item.label}

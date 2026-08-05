@@ -8835,3 +8835,215 @@ html.lenis body {
 .story-media-screen::after {
   opacity: 0.2;
 }
+
+/* ========================================================
+   MISSION-3 — TECHNICAL HARDENING (appended — do not override above)
+   ======================================================== */
+
+/* ── Route-level lazy-loader: minimal on-brand spinner ── */
+.route-loader {
+  display: grid;
+  min-height: calc(100vh - 140px);
+  place-items: center;
+  background: #05070b;
+}
+
+.route-loader-wordmark {
+  display: inline-flex;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--site-cyan);
+  opacity: 0.44;
+  animation: routeLoaderPulse 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-loader-wordmark {
+    animation: none;
+    opacity: 0.64;
+  }
+}
+
+@keyframes routeLoaderPulse {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.72; }
+}
+
+/* ── Skip to main content link ── */
+.skip-to-main-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: var(--site-cyan);
+  color: #05070b;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transform: translateY(-120%);
+  transition: transform 180ms var(--site-ease);
+}
+
+.skip-to-main-link:focus {
+  transform: translateY(0);
+}
+
+/* ── 404 Not Found page ── */
+.not-found-page {
+  display: grid;
+  min-height: calc(100vh - 200px);
+  place-items: center;
+  text-align: center;
+}
+
+.not-found-content {
+  display: flex;
+  max-width: 460px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 24px;
+}
+
+.not-found-code {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--site-cyan), var(--site-teal));
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.not-found-copy {
+  margin: 0;
+  color: var(--site-muted);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.64;
+}
+
+.not-found-link {
+  margin-top: 8px;
+}
+
+/* ── Additional :focus-visible coverage for all interactive elements ── */
+[tabindex]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+details:focus-visible {
+  outline: 2px solid var(--site-cyan);
+  outline-offset: 2px;
+}
+
+/* ── Review avatar lazy-load spacing guard ── */
+.review-avatar-img {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* ── Ensure no horizontal overflow at 360px ── */
+@media (max-width: 400px) {
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .site-nav {
+    padding: 6px 8px 6px 10px;
+    border-radius: 16px;
+  }
+
+  .hero-section {
+    padding: 76px 0 40px;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .hero-visual {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: auto;
+  }
+
+  .hero-copy {
+    grid-column: 1;
+  }
+
+  .story-steps article {
+    grid-template-columns: 32px minmax(0, 1fr);
+    padding: 14px 14px 14px 16px;
+    gap: 10px 16px;
+  }
+
+  .story-step-mockup {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .story-step-screen img {
+    max-width: 100%;
+  }
+
+  .story-section {
+    padding: 48px 0 64px;
+  }
+
+  .platform-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .final-cta {
+    padding: 48px 16px;
+  }
+
+  .subpage {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .docs-blueprint-svg {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .terminal-mockup {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .legal-policy-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Navigation mobile breakpoint ── */
+@media (max-width: 768px) {
+  .nav-menu-button {
+    display: flex;
+  }
+
+  .nav-center-links,
+  .nav-github {
+    display: none;
+  }
+}
+
+/* ========================================================
+   FINAL POLISH (Hermes)
+   ======================================================== */
+
+/* Hero H1: tight -0.06em letter-tracking was swallowing the word
+   space ("OS Controller" read as "OSController") — compensate. */
+.hero-title {
+  word-spacing: 0.18em;
+}

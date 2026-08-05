@@ -124,6 +124,8 @@ export function LaptopMockup({
                 alt={`Shell ${screen.label} screenshot`}
                 className={`${screen.id === activeScreen.id ? 'is-active' : ''} ${isVideoShown || usesVideoPoster ? 'is-video-playing' : ''}`}
                 draggable={false}
+                loading="lazy"
+                decoding="async"
               />
             ))}
 
@@ -353,7 +355,7 @@ export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
             </div>
             <figure className="story-step-mockup" aria-label={`${screen.label} screenshot preview`}>
               <div className="story-step-screen">
-                <img src={screen.image} alt="" draggable={false} />
+                <img src={screen.image} alt="" draggable={false} loading="lazy" decoding="async" />
                 <span className="story-step-glass" />
               </div>
               <figcaption>{screen.label}</figcaption>

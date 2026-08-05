@@ -643,7 +643,7 @@ export function FeaturesPage() {
     : featureGroups.filter(fg => featureToTabMap[fg.title] === activeTab)
 
   return (
-    <main className="subpage feature-page">
+    <main id="main-content" className="subpage feature-page">
       <section className="subpage-hero feature-page-hero">
         <p className="eyebrow">Features</p>
         <h1>Everything Shell can control, route, remember, and guard.</h1>

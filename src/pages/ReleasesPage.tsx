@@ -2,7 +2,7 @@ import { ReleaseDownloadCard } from '../components/ReleaseDownloadCard'
 
 export function ReleasesPage() {
   return (
-    <main className="subpage">
+    <main id="main-content" className="subpage">
       <section className="subpage-hero">
         <p className="eyebrow">Releases</p>
         <h1>Latest Windows build, resolved from GitHub.</h1>

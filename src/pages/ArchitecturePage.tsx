@@ -114,7 +114,7 @@ export function ArchitecturePage() {
   const ActiveIcon = activeLayer.Icon
 
   return (
-    <main className="subpage">
+    <main id="main-content" className="subpage">
       <section className="subpage-hero">
         <p className="eyebrow">Architecture & Flow</p>
         <h1>The control layer is explicit by design.</h1>

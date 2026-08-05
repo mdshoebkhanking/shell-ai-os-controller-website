@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import gsap from 'gsap'
@@ -8,14 +8,39 @@ import { HeroBackground } from './components/HeroBackground'
 import { SiteNav } from './components/SiteNav'
 import { SiteMotion } from './components/SiteMotion'
 import { SiteFooter } from './components/SiteFooter'
-import { ArchitecturePage } from './pages/ArchitecturePage'
-import { DocsPage } from './pages/DocsPage'
-import { FeaturesPage } from './pages/FeaturesPage'
-import { HomePage } from './pages/HomePage'
-import { PrivacyPage, TermsPage } from './pages/LegalPage'
-import { ReleasesPage } from './pages/ReleasesPage'
+
+const ArchitecturePage = lazy(() =>
+  import('./pages/ArchitecturePage').then((m) => ({ default: m.ArchitecturePage }))
+)
+const DocsPage = lazy(() =>
+  import('./pages/DocsPage').then((m) => ({ default: m.DocsPage }))
+)
+const FeaturesPage = lazy(() =>
+  import('./pages/FeaturesPage').then((m) => ({ default: m.FeaturesPage }))
+)
+const HomePage = lazy(() =>
+  import('./pages/HomePage').then((m) => ({ default: m.HomePage }))
+)
+const PrivacyPage = lazy(() =>
+  import('./pages/LegalPage').then((m) => ({ default: m.PrivacyPage }))
+)
+const TermsPage = lazy(() =>
+  import('./pages/LegalPage').then((m) => ({ default: m.TermsPage }))
+)
+const ReleasesPage = lazy(() =>
+  import('./pages/ReleasesPage').then((m) => ({ default: m.ReleasesPage }))
+)
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 gsap.registerPlugin(ScrollTrigger)
+
+function RouteLoader() {
+  return (
+    <div className="route-loader" role="status" aria-busy="true" aria-live="polite">
+      <span className="route-loader-wordmark">SHELL</span>
+    </div>
+  )
+}
 
 export default function App() {
   const { pathname } = useLocation()
@@ -51,6 +76,9 @@ export default function App() {
 
   return (
     <>
+      <a href="#main-content" className="skip-to-main-link">
+        Skip to main content
+      </a>
       <div className="scroll-progress-bar" />
       {isHomePage ? (
         <HeroBackground />
@@ -59,15 +87,18 @@ export default function App() {
       )}
       <SiteNav />
       <SiteMotion />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/docs" element={<DocsPage />} />
-        <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/architecture" element={<ArchitecturePage />} />
-        <Route path="/releases" element={<ReleasesPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-      </Routes>
+      <Suspense fallback={<RouteLoader />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/architecture" element={<ArchitecturePage />} />
+          <Route path="/releases" element={<ReleasesPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
       <SiteFooter />
     </>
   )

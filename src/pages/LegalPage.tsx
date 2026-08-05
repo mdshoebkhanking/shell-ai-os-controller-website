@@ -54,7 +54,7 @@ function LegalShell({
   const Icon = type === 'privacy' ? ShieldCheck : Scale
 
   return (
-    <main className="subpage legal-page">
+    <main id="main-content" className="subpage legal-page">
       <section className="subpage-hero legal-hero">
         <p className="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
