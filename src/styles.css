@@ -1154,7 +1154,7 @@ p {
 .hero-copy .hero-subtitle {
   max-width: 620px;
   margin-top: 24px;
-  color: rgba(216, 224, 235, 0.78);
+  color: rgba(228, 232, 240, 0.86);
   font-size: clamp(1.02rem, 1.34vw, 1.26rem);
   font-weight: 400;
   letter-spacing: -0.018em;
@@ -1360,7 +1360,7 @@ p {
   max-width: 190px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #71717a;
+  color: #a1a1aa;
   font-size: 11px;
   font-weight: 500;
 }
@@ -1407,7 +1407,7 @@ p {
 }
 
 .hero-subaction-divider {
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(228, 232, 240, 0.52);
   font-size: 11px;
 }
 
@@ -1424,6 +1424,155 @@ p {
   min-height: 590px;
   min-width: 0;
   place-items: center;
+}
+
+.shell-core-wrap {
+  position: relative;
+  display: grid;
+  width: min(620px, 100%);
+  min-height: 590px;
+  place-items: center;
+  isolation: isolate;
+}
+
+.shell-core-wrap::before,
+.shell-core-wrap::after {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  pointer-events: none;
+}
+
+.shell-core-wrap::before {
+  inset: 6% 0 20%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(6, 182, 212, 0.24), transparent 34%),
+    radial-gradient(circle at 50% 50%, rgba(124, 246, 255, 0.1), transparent 58%);
+  filter: blur(24px);
+  opacity: 0.86;
+}
+
+.shell-core-wrap::after {
+  inset: 17% 10% 24%;
+  border: 1px solid rgba(124, 246, 255, 0.12);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(5, 7, 11, 0), rgba(5, 7, 11, 0.26) 62%, rgba(5, 7, 11, 0));
+  box-shadow:
+    inset 0 0 70px rgba(124, 246, 255, 0.035),
+    0 0 58px rgba(6, 182, 212, 0.06);
+}
+
+.shell-core-scene {
+  position: relative;
+  width: min(570px, 100%);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: crosshair;
+  contain: layout paint size;
+}
+
+.shell-core-scene::before {
+  position: absolute;
+  inset: 12%;
+  border: 1px solid rgba(124, 246, 255, 0.08);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 42% 38%, rgba(255, 255, 255, 0.08), transparent 12%),
+    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.06), transparent 58%);
+  content: '';
+  pointer-events: none;
+}
+
+.shell-core-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.shell-core-glass-panel {
+  width: min(430px, calc(100% - 42px));
+  margin: -44px auto 0;
+  border-color: rgba(124, 246, 255, 0.28);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(124, 246, 255, 0.18), transparent 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.125), rgba(255, 255, 255, 0.035)),
+    rgba(8, 12, 16, 0.86);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.46),
+    0 0 38px rgba(6, 182, 212, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.hero-magnetic-action {
+  --magnetic-x: 0px;
+  --magnetic-y: 0px;
+  transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+  transition:
+    transform 420ms cubic-bezier(0.2, 1.4, 0.34, 1),
+    background 150ms var(--site-ease),
+    border-color 150ms var(--site-ease),
+    box-shadow 150ms var(--site-ease);
+  will-change: transform;
+}
+
+.hero-section .hero-magnetic-action:hover {
+  transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+}
+
+.home-section-rail {
+  position: fixed;
+  top: 50%;
+  left: max(24px, calc((100vw - 1240px) / 2 - 72px));
+  z-index: 80;
+  display: none;
+  flex-direction: column;
+  gap: 7px;
+  border: 1px solid rgba(124, 246, 255, 0.14);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(124, 246, 255, 0.09), transparent 62%),
+    rgba(5, 8, 12, 0.72);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 8px;
+  transform: translateY(-50%);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+}
+
+.home-section-rail a {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: rgba(212, 232, 238, 0.72);
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.home-section-rail a:hover,
+.home-section-rail a.is-active {
+  border-color: rgba(124, 246, 255, 0.34);
+  background: rgba(6, 182, 212, 0.12);
+  color: #7cf6ff;
+  box-shadow: 0 0 18px rgba(6, 182, 212, 0.12);
+}
+
+@media (min-width: 1440px) {
+  .home-section-rail {
+    display: flex;
+  }
 }
 
 .energy-field {
@@ -2854,7 +3003,7 @@ p {
 .pipeline-node p {
   grid-column: 2;
   margin: 0;
-  color: rgba(207, 216, 229, 0.78);
+  color: rgba(228, 232, 240, 0.86);
   font-size: 13px;
   line-height: 1.55;
 }
@@ -4457,7 +4606,7 @@ p {
   border: 1px solid rgba(211, 222, 237, 0.12);
   border-radius: 999px;
   background: rgba(234, 247, 251, 0.055);
-  color: rgba(216, 224, 235, 0.78);
+  color: rgba(228, 232, 240, 0.86);
   padding: 8px 10px;
 }
 
@@ -4519,7 +4668,7 @@ p {
 
 .legal-policy-card p {
   margin: 0;
-  color: rgba(207, 216, 229, 0.78);
+  color: rgba(228, 232, 240, 0.84);
   font-size: 14px;
   line-height: 1.68;
 }
@@ -4545,7 +4694,7 @@ p {
 .legal-note p {
   max-width: 760px;
   margin: 0;
-  color: rgba(207, 216, 229, 0.78);
+  color: rgba(228, 232, 240, 0.84);
   font-size: 14px;
   line-height: 1.68;
 }
@@ -4581,6 +4730,15 @@ p {
     grid-column: 2;
     grid-row: 1;
     min-height: 480px;
+  }
+
+  .shell-core-wrap {
+    width: min(520px, 100%);
+    min-height: 480px;
+  }
+
+  .shell-core-scene {
+    width: min(470px, 100%);
   }
 
   .hero-visual .laptop-scene {
@@ -4725,6 +4883,19 @@ p {
     min-height: 390px;
   }
 
+  .shell-core-wrap {
+    width: min(450px, 100%);
+    min-height: 390px;
+  }
+
+  .shell-core-scene {
+    width: min(390px, 100%);
+  }
+
+  .shell-core-glass-panel {
+    margin-top: -34px;
+  }
+
   .hero-visual .laptop-scene {
     width: min(470px, 100%);
   }
@@ -4805,6 +4976,15 @@ p {
     justify-content: center;
     padding: 0 12px;
     overflow: visible;
+  }
+
+  .shell-core-wrap {
+    width: min(540px, 92vw);
+    min-height: 500px;
+  }
+
+  .shell-core-scene {
+    width: min(500px, 92vw);
   }
 
   .hero-visual .laptop-scene {
@@ -5008,6 +5188,20 @@ p {
     min-height: 350px;
   }
 
+  .shell-core-wrap {
+    width: min(420px, 90vw);
+    min-height: 390px;
+  }
+
+  .shell-core-scene {
+    width: min(390px, 90vw);
+  }
+
+  .shell-core-glass-panel {
+    width: min(360px, calc(100% - 20px));
+    margin-top: -26px;
+  }
+
   .hero-visual .laptop-scene {
     width: min(420px, 84vw);
   }
@@ -5082,6 +5276,11 @@ p {
 
   .laptop-device,
   .laptop-scene-compact .laptop-device {
+    transform: none;
+  }
+
+  .hero-magnetic-action,
+  .hero-section .hero-magnetic-action:hover {
     transform: none;
   }
 }
@@ -6034,7 +6233,7 @@ p {
   font-family: var(--font-technical);
   font-size: 8px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(228, 232, 240, 0.7);
   letter-spacing: 0.08em;
 }
 
@@ -6825,7 +7024,7 @@ html.lenis body {
   right: 0;
   top: 4px;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(228, 232, 240, 0.68);
   font-family: var(--font-technical);
 }
 
@@ -6914,7 +7113,7 @@ html.lenis body {
 .form-group label {
   font-size: 11px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(228, 232, 240, 0.78);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -6957,7 +7156,7 @@ html.lenis body {
   background: none;
   border: none;
   font-size: 22px;
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(228, 232, 240, 0.42);
   cursor: pointer;
   padding: 0;
   transition: all 0.2s ease;
@@ -7055,7 +7254,7 @@ html.lenis body {
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, var(--site-cyan) 0%, var(--site-emerald) 50%, var(--site-purple) 100%);
+  background: linear-gradient(90deg, var(--site-teal) 0%, var(--site-cyan) 58%, #7cf6ff 100%);
   transform-origin: left;
   transform: scaleX(0);
   z-index: 9999;
@@ -7973,10 +8172,9 @@ html.lenis body {
 /* ── Scroll progress bar improved gradient ───────────────────── */
 .scroll-progress-bar {
   background: linear-gradient(90deg,
-      var(--site-cyan) 0%,
-      var(--site-emerald) 40%,
-      #a855f7 80%,
-      var(--site-cyan) 100%) !important;
+      var(--site-teal) 0%,
+      var(--site-cyan) 52%,
+      #7cf6ff 100%) !important;
   background-size: 200% 100% !important;
   animation: progressBarShimmer 3s linear infinite !important;
 }

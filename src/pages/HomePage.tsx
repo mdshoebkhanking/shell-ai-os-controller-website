@@ -17,10 +17,11 @@ import {
   TerminalSquare,
   WifiOff
 } from 'lucide-react'
-import { useState, type CSSProperties } from 'react'
+import { useEffect, useState, type CSSProperties, type PointerEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { InternalAIFabricBackground } from '../components/InternalAIFabricBackground'
-import { LaptopMockup, LaptopStory } from '../components/LaptopMockup'
+import { LaptopStory } from '../components/LaptopMockup'
+import { ShellCoreScene } from '../components/ShellCoreScene'
 import { githubRepoUrl, platformCards, screenStates } from '../data'
 import { useLatestReleaseContent } from '../release'
 
@@ -32,6 +33,15 @@ const desktopWorkflowLayers = [
   { label: 'APIs', detail: 'Tools', Icon: Network },
   { label: 'Logs', detail: 'Trace', Icon: Activity },
   { label: 'Memory', detail: 'Recall', Icon: Brain }
+]
+
+const homeRailItems = [
+  { id: 'download', label: 'Download', Icon: Download },
+  { id: 'story', label: 'Story', Icon: BookOpen },
+  { id: 'problem', label: 'Desktop Problem', Icon: Layers3 },
+  { id: 'platform', label: 'Platform Story', Icon: AppWindow },
+  { id: 'safety', label: 'Safety Cockpit', Icon: ShieldCheck },
+  { id: 'reviews', label: 'Reviews & Feedback', Icon: CheckCircle2 }
 ]
 
 const platformDetails: Record<
@@ -155,7 +165,54 @@ export function HomePage() {
   const [hoverRating, setHoverRating] = useState(0)
   const [formError, setFormError] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
+  const [activeRailSection, setActiveRailSection] = useState('download')
   const marqueeReviews = [...reviews, ...reviews]
+  const heroStatus = screenStates[0]
+
+  useEffect(() => {
+    const sections = homeRailItems
+      .map((item) => document.getElementById(item.id))
+      .filter((section): section is HTMLElement => Boolean(section))
+
+    if (!sections.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+        if (visibleEntry?.target.id) {
+          setActiveRailSection(visibleEntry.target.id)
+        }
+      },
+      {
+        rootMargin: '-38% 0px -46% 0px',
+        threshold: [0.02, 0.2, 0.45, 0.7]
+      }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    return () => observer.disconnect()
+  }, [])
+
+  const handleMagneticMove = (event: PointerEvent<HTMLElement>) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const target = event.currentTarget
+    const rect = target.getBoundingClientRect()
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 12
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 12
+
+    target.style.setProperty('--magnetic-x', `${Math.max(-6, Math.min(6, x)).toFixed(2)}px`)
+    target.style.setProperty('--magnetic-y', `${Math.max(-6, Math.min(6, y)).toFixed(2)}px`)
+  }
+
+  const handleMagneticLeave = (event: PointerEvent<HTMLElement>) => {
+    event.currentTarget.style.setProperty('--magnetic-x', '0px')
+    event.currentTarget.style.setProperty('--magnetic-y', '0px')
+  }
 
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault()
@@ -195,6 +252,24 @@ export function HomePage() {
 
   return (
     <main>
+      <nav className="home-section-rail" aria-label="Home section navigation">
+        {homeRailItems.map((item) => {
+          const Icon = item.Icon
+
+          return (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={activeRailSection === item.id ? 'is-active' : undefined}
+              aria-label={item.label}
+              title={item.label}
+            >
+              <Icon size={16} />
+            </a>
+          )
+        })}
+      </nav>
+
       <section id="download" className="hero-section">
         <div className="hero-copy">
           <a href="#download" className="hero-announcement-link">
@@ -245,12 +320,14 @@ export function HomePage() {
                 href={releaseContent.disabled ? '#download' : releaseContent.href}
                 className={
                   releaseContent.disabled
-                    ? 'primary-action hero-download-action is-loading'
-                    : 'primary-action hero-download-action'
+                    ? 'primary-action hero-download-action hero-magnetic-action is-loading'
+                    : 'primary-action hero-download-action hero-magnetic-action'
                 }
                 target={releaseContent.disabled ? undefined : '_blank'}
                 rel={releaseContent.disabled ? undefined : 'noreferrer'}
                 aria-disabled={releaseContent.disabled}
+                onPointerMove={handleMagneticMove}
+                onPointerLeave={handleMagneticLeave}
               >
                 <span className="download-icon-frame">
                   <Download size={18} />
@@ -261,7 +338,12 @@ export function HomePage() {
                 </span>
                 <ArrowRight className="download-arrow" size={17} />
               </a>
-              <Link to="/docs" className="secondary-action">
+              <Link
+                to="/docs"
+                className="secondary-action hero-magnetic-action"
+                onPointerMove={handleMagneticMove}
+                onPointerLeave={handleMagneticLeave}
+              >
                 <BookOpen size={18} />
                 Read Docs
               </Link>
@@ -282,7 +364,13 @@ export function HomePage() {
 
         <div className="hero-visual">
           <div className="energy-field" />
-          <LaptopMockup activeId="dashboard" />
+          <div className="shell-core-wrap">
+            <ShellCoreScene />
+            <div className="screen-status shell-core-glass-panel">
+              <span>{heroStatus.label}</span>
+              <strong>{heroStatus.title}</strong>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -311,7 +399,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="problem-section">
+      <section id="problem" className="problem-section">
         <div className="section-heading align-left">
           <p className="eyebrow">The Desktop Problem</p>
           <h2>Most assistants stop at chat.</h2>
@@ -361,7 +449,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="platform-section">
+      <section id="platform" className="platform-section">
         <div className="section-heading">
           <p className="eyebrow">Platform Story</p>
           <h2>Choose the right Shell path for your machine.</h2>

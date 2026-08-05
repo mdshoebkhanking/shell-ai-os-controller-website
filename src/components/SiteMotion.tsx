@@ -34,6 +34,7 @@ const revealSelector = [
   '.hero-announcement',
   '.hero-offline-note',
   '.hero-download-cluster',
+  '.shell-core-wrap',
   '.floating-badge'
 ].join(',')
 
