@@ -355,7 +355,7 @@ export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
             </div>
             <figure className="story-step-mockup" aria-label={`${screen.label} screenshot preview`}>
               <div className="story-step-screen">
-                <img src={screen.image} alt="" draggable={false} loading="lazy" decoding="async" />
+                <img src={screen.image} alt="" draggable={false} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
                 <span className="story-step-glass" />
               </div>
               <figcaption>{screen.label}</figcaption>
