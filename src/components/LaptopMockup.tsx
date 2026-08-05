@@ -198,21 +198,35 @@ type LaptopStoryProps = {
 
 export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
   const [activeId, setActiveId] = useState(screens[0]?.id ?? 'dashboard')
+  const [storyInView, setStoryInView] = useState(false)
   const stageRef = useRef<HTMLDivElement | null>(null)
   const storyVideoStyle = {
     '--story-video-image': `url("${screens.find((s) => s.id === activeId)?.image ?? screens[0]?.image ?? ''}")`
   } as CSSProperties
 
+  const scrollToStep = useCallback((id: string) => {
+    const el = document.querySelector(`[data-screen-step="${id}"]`)
+    if (!el) return
+    const lenis = (window as unknown as { lenis?: { scrollTo: (target: Element, opts?: Record<string, unknown>) => void } }).lenis
+    if (lenis?.scrollTo) {
+      lenis.scrollTo(el, { offset: -Math.round(window.innerHeight * 0.24), duration: 1.15 })
+    } else {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [])
+
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const context = gsap.context(() => {
       if (!reduceMotion && stageRef.current) {
+        // Sticky laptop "lands" as the story section scrolls in
         gsap.fromTo(
           '.story-laptop-motion',
-          { y: -12, scale: 0.98 },
+          { y: -12, scale: 0.98, rotationX: 12, transformPerspective: 900 },
           {
             y: 34,
             scale: 0.94,
+            rotationX: 0,
             ease: 'none',
             scrollTrigger: {
               trigger: stageRef.current,
@@ -222,6 +236,36 @@ export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
             }
           }
         )
+
+        // Scroll-flight: each step dives in (3D), holds, then drifts out
+        const articles = gsap.utils.toArray<HTMLElement>('.story-steps article')
+        articles.forEach((article) => {
+          gsap.fromTo(
+            article,
+            { opacity: 0.16, y: 96 },
+            {
+              opacity: 1,
+              y: 0,
+              ease: 'none',
+              scrollTrigger: { trigger: article, start: 'top 96%', end: 'top 56%', scrub: 0.5 }
+            }
+          )
+          gsap.fromTo(
+            article,
+            { '--step-dive': '16deg' } as gsap.TweenVars,
+            {
+              '--step-dive': '0deg',
+              ease: 'none',
+              scrollTrigger: { trigger: article, start: 'top 96%', end: 'top 54%', scrub: 0.5 }
+            } as gsap.TweenVars
+          )
+          gsap.to(article, {
+            y: -44,
+            opacity: 0.45,
+            ease: 'none',
+            scrollTrigger: { trigger: article, start: 'bottom 32%', end: 'bottom 6%', scrub: 0.5 }
+          })
+        })
       }
 
       screens.forEach((screen) => {
@@ -232,6 +276,14 @@ export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
           onEnter: () => setActiveId(screen.id),
           onEnterBack: () => setActiveId(screen.id)
         })
+      })
+
+      // Progress rail visibility follows the story section
+      ScrollTrigger.create({
+        trigger: stageRef.current,
+        start: 'top 62%',
+        end: 'bottom 38%',
+        onToggle: (self) => setStoryInView(self.isActive)
       })
     }, stageRef)
 
@@ -309,6 +361,25 @@ export function LaptopStory({ screens = screenStates }: LaptopStoryProps) {
           </article>
         ))}
       </div>
+
+      <nav
+        className={`story-progress-rail${storyInView ? ' is-visible' : ''}`}
+        aria-label="Story progress"
+      >
+        {screens.map((screen, index) => (
+          <button
+            key={screen.id}
+            type="button"
+            className={activeId === screen.id ? 'is-active' : undefined}
+            aria-label={`Go to step ${index + 1}: ${screen.title}`}
+            title={screen.title}
+            onClick={() => scrollToStep(screen.id)}
+          >
+            <span className="story-progress-dot" />
+            <span className="story-progress-label">{String(index + 1).padStart(2, '0')}</span>
+          </button>
+        ))}
+      </nav>
     </section>
   )
 }

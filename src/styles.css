@@ -8642,3 +8642,196 @@ html.lenis body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+/* ========================================================
+   2026 SCROLL-FLIGHT UPGRADES (appended — wins by order)
+   ======================================================== */
+
+/* ── Story mockups: lift the product UI out of the dark ── */
+.story-step-screen img {
+  filter: saturate(1.18) contrast(1.09) brightness(1.44);
+}
+
+.story-step-glass {
+  background:
+    linear-gradient(116deg, rgba(255, 255, 255, 0.2), transparent 21% 70%, rgba(231, 214, 173, 0.05)),
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.05)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 9px);
+}
+
+.story-step-mockup::before {
+  opacity: 0.62;
+}
+
+/* ── Scroll-flight: GSAP owns article transform/opacity ── */
+.story-steps article {
+  --step-dive: 0deg;
+  transition: border-color 240ms var(--site-ease);
+  will-change: transform, opacity;
+}
+
+.story-steps article.is-active {
+  transform: none;
+}
+
+.story-step-mockup {
+  transform: perspective(1100px) rotateX(calc(5deg + var(--step-dive, 0deg))) rotateY(var(--step-yaw)) rotateZ(var(--step-roll))
+    translateY(3px);
+}
+
+.story-steps article.is-active .story-step-mockup {
+  transform: perspective(1100px) rotateX(calc(5deg + var(--step-dive, 0deg))) rotateY(var(--step-yaw)) rotateZ(var(--step-roll))
+    translateY(-10px) scale(1.035);
+}
+
+/* ── Word-split headline reveal ── */
+.word-split-heading .word-split-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+/* ── Story progress rail (right edge, story section only) ── */
+.story-progress-rail {
+  position: fixed;
+  top: 50%;
+  right: max(20px, calc((100vw - 1240px) / 2 - 64px));
+  z-index: 80;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 8px;
+  border: 1px solid rgba(124, 246, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(5, 8, 12, 0.72);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  transform: translateY(-50%) translateX(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 260ms var(--site-ease),
+    transform 260ms var(--site-ease);
+}
+
+.story-progress-rail.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+.story-progress-rail button {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.story-progress-rail button:focus-visible {
+  outline: 2px solid var(--site-cyan);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.story-progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(124, 246, 255, 0.28);
+  transition: all 220ms var(--site-ease);
+}
+
+.story-progress-rail button.is-active .story-progress-dot {
+  height: 20px;
+  background: var(--site-cyan);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.65);
+}
+
+.story-progress-label {
+  color: rgba(212, 232, 238, 0.55);
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.story-progress-rail button.is-active .story-progress-label {
+  color: var(--site-cyan);
+}
+
+@media (min-width: 1440px) {
+  .story-progress-rail {
+    display: flex;
+  }
+}
+
+/* ── Platform cards: pointer-driven 3D tilt ── */
+.platform-grid {
+  perspective: 1400px;
+}
+
+.platform-card.tilt-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+}
+
+.platform-card.tilt-card:hover {
+  transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-4px) scale(1.015);
+}
+
+/* ── Final CTA: ambient glow pulse ── */
+.final-cta .shiny-action {
+  animation: ctaGlowPulse 3.4s ease-in-out infinite;
+}
+
+@keyframes ctaGlowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(6, 182, 212, 0), 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 34px rgba(6, 182, 212, 0.38), 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-progress-rail {
+    transition: none;
+  }
+
+  .platform-card.tilt-card,
+  .platform-card.tilt-card:hover {
+    transform: none;
+  }
+
+  .final-cta .shiny-action {
+    animation: none;
+  }
+}
+
+/* ── Sticky story laptop: brighten the swapped screen ── */
+.story-video-slot {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.15)),
+    radial-gradient(circle at 50% 48%, rgba(114, 226, 255, 0.1), transparent 28%),
+    var(--story-video-image) center / cover no-repeat;
+  opacity: 0.95;
+  filter: brightness(1.38) saturate(1.14) contrast(1.06);
+}
+
+.story-video-slot::after {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1), transparent 18% 82%, rgba(0, 0, 0, 0.1)),
+    radial-gradient(circle at 50% 50%, transparent 44%, rgba(0, 0, 0, 0.16));
+}
+
+.story-media-screen::after {
+  opacity: 0.2;
+}

@@ -19,11 +19,15 @@ import {
 } from 'lucide-react'
 import { useEffect, useState, type CSSProperties, type PointerEvent } from 'react'
 import { Link } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { InternalAIFabricBackground } from '../components/InternalAIFabricBackground'
 import { LaptopStory } from '../components/LaptopMockup'
 import { ShellCoreScene } from '../components/ShellCoreScene'
 import { githubRepoUrl, platformCards, screenStates } from '../data'
 import { useLatestReleaseContent } from '../release'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const desktopWorkflowLayers = [
   { label: 'Apps', detail: 'Windows', Icon: AppWindow },
@@ -214,6 +218,50 @@ export function HomePage() {
     event.currentTarget.style.setProperty('--magnetic-y', '0px')
   }
 
+  const handleTiltMove = (event: PointerEvent<HTMLElement>) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const target = event.currentTarget
+    const rect = target.getBoundingClientRect()
+    const x = (event.clientX - rect.left) / rect.width - 0.5
+    const y = (event.clientY - rect.top) / rect.height - 0.5
+
+    target.style.setProperty('--tilt-x', `${(-y * 7).toFixed(2)}deg`)
+    target.style.setProperty('--tilt-y', `${(x * 9).toFixed(2)}deg`)
+  }
+
+  const handleTiltLeave = (event: PointerEvent<HTMLElement>) => {
+    event.currentTarget.style.setProperty('--tilt-x', '0deg')
+    event.currentTarget.style.setProperty('--tilt-y', '0deg')
+  }
+
+  // Word-by-word blur reveal for the positioning headline
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        '.word-split-word',
+        { opacity: 0.1, y: 16, filter: 'blur(7px)' },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          stagger: 0.05,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.split-section',
+            start: 'top 80%',
+            end: 'top 34%',
+            scrub: 0.6
+          }
+        }
+      )
+    })
+
+    return () => context.revert()
+  }, [])
+
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault()
     if (!newName.trim()) {
@@ -383,7 +431,13 @@ export function HomePage() {
       <section className="split-section">
         <div>
           <p className="eyebrow">Positioning</p>
-          <h2>Not an OS. A control layer over your OS.</h2>
+          <h2 className="word-split-heading" aria-label="Not an OS. A control layer over your OS.">
+            {'Not an OS. A control layer over your OS.'.split(' ').map((word, index) => (
+              <span key={`${word}-${index}`} className="word-split-word" aria-hidden="true">
+                {word}{' '}
+              </span>
+            ))}
+          </h2>
         </div>
         <div className="split-copy">
           <p>
@@ -463,7 +517,9 @@ export function HomePage() {
             return (
               <article
                 key={platform.title}
-                className={`platform-card${isPrimary ? ' primary' : ''}`}
+                className={`platform-card tilt-card${isPrimary ? ' primary' : ''}`}
+                onPointerMove={handleTiltMove}
+                onPointerLeave={handleTiltLeave}
               >
                 {isPrimary && (
                   <div className="platform-popular-badge">
