@@ -7,7 +7,7 @@ export function SiteFooter() {
       <div className="footer-container">
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
-            <img src={publicAsset('/media/brand/shell-official-logo.png')} alt="Shell AI logo" className="brand-mark-footer" />
+            <img src={publicAsset('/media/brand/shell-official-logo.png')} alt="Shell AI logo" className="brand-mark-footer" loading="lazy" decoding="async" />
             <span>Shell AI</span>
           </Link>
           <p className="footer-tagline">
