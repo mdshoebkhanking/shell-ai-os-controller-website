@@ -13,10 +13,6 @@ export function SiteFooter() {
           <p className="footer-tagline">
             Secure, high-performance local control layer for agentic AI workflows.
           </p>
-          <div className="footer-status">
-            <span className="status-indicator" />
-            <span>All systems operational</span>
-          </div>
         </div>
 
         <div className="footer-links-grid">
