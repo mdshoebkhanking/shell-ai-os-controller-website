@@ -655,19 +655,33 @@ export function HomePage() {
       </section>
 
       <section className="final-cta">
-        <Boxes className="cta-icon" />
-        <h2>Control your workspace with AI, safely.</h2>
-        <div className="hero-actions centered">
-          <a href="#download" className="primary-action shiny-action">
-            Download Shell AI for Windows
-            <ArrowRight size={18} />
-          </a>
-          <a href={githubRepoUrl} target="_blank" rel="noreferrer" className="secondary-action github-action">
-            Audit the source on GitHub
-          </a>
-          <Link to="/docs" className="secondary-action">
-            Read install guide
-          </Link>
+        <video
+          className="cta-ambient-video"
+          src="/media/videos/cta-ambient.mp4"
+          poster="/media/videos/cta-ambient-poster.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
+        <div className="cta-ambient-overlay" aria-hidden="true" />
+        <div className="final-cta-content">
+          <Boxes className="cta-icon" />
+          <h2>Control your workspace with AI, safely.</h2>
+          <div className="hero-actions centered">
+            <a href="#download" className="primary-action shiny-action">
+              Download Shell AI for Windows
+              <ArrowRight size={18} />
+            </a>
+            <a href={githubRepoUrl} target="_blank" rel="noreferrer" className="secondary-action github-action">
+              Audit the source on GitHub
+            </a>
+            <Link to="/docs" className="secondary-action">
+              Read install guide
+            </Link>
+          </div>
         </div>
       </section>
     </main>

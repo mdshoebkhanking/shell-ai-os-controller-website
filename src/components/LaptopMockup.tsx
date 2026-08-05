@@ -124,7 +124,7 @@ export function LaptopMockup({
                 alt={`Shell ${screen.label} screenshot`}
                 className={`${screen.id === activeScreen.id ? 'is-active' : ''} ${isVideoShown || usesVideoPoster ? 'is-video-playing' : ''}`}
                 draggable={false}
-                loading="lazy"
+                loading="eager"
                 decoding="async"
               />
             ))}
