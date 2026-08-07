@@ -38,15 +38,6 @@ const desktopWorkflowLayers = [
   { label: 'Memory', detail: 'Recall', Icon: Brain }
 ]
 
-const homeRailItems = [
-  { id: 'download', label: 'Download', Icon: Download },
-  { id: 'story', label: 'Story', Icon: BookOpen },
-  { id: 'problem', label: 'Desktop Problem', Icon: Layers3 },
-  { id: 'platform', label: 'Platform Story', Icon: AppWindow },
-  { id: 'safety', label: 'Safety Cockpit', Icon: ShieldCheck },
-  { id: 'reviews', label: 'Reviews & Feedback', Icon: CheckCircle2 }
-]
-
 const platformDetails: Record<
   string,
   {
@@ -168,37 +159,7 @@ export function HomePage() {
   const [hoverRating, setHoverRating] = useState(0)
   const [formError, setFormError] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
-  const [activeRailSection, setActiveRailSection] = useState('download')
   const marqueeReviews = [...reviews, ...reviews]
-  const heroStatus = screenStates[0]
-
-  useEffect(() => {
-    const sections = homeRailItems
-      .map((item) => document.getElementById(item.id))
-      .filter((section): section is HTMLElement => Boolean(section))
-
-    if (!sections.length) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-
-        if (visibleEntry?.target.id) {
-          setActiveRailSection(visibleEntry.target.id)
-        }
-      },
-      {
-        rootMargin: '-38% 0px -46% 0px',
-        threshold: [0.02, 0.2, 0.45, 0.7]
-      }
-    )
-
-    sections.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
-  }, [])
 
   const handleMagneticMove = (event: PointerEvent<HTMLElement>) => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -298,25 +259,7 @@ export function HomePage() {
   }
 
   return (
-    <main>
-      <nav className="home-section-rail" aria-label="Home section navigation">
-        {homeRailItems.map((item) => {
-          const Icon = item.Icon
-
-          return (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={activeRailSection === item.id ? 'is-active' : undefined}
-              aria-label={item.label}
-              title={item.label}
-            >
-              <Icon size={16} />
-            </a>
-          )
-        })}
-      </nav>
-
+    <main id="main-content">
       <section id="download" className="hero-section">
         <div className="hero-copy">
           <a href="#download" className="hero-announcement-link">
@@ -411,7 +354,7 @@ export function HomePage() {
 
         <div className="hero-visual">
           <div className="energy-field" />
-          <LaptopMockup />
+          <LaptopMockup activeId="dashboard" />
         </div>
       </section>
 
@@ -426,8 +369,8 @@ export function HomePage() {
           <p className="eyebrow">Positioning</p>
           <h2 className="word-split-heading" aria-label="Not an OS. A control layer over your OS.">
             {'Not an OS. A control layer over your OS.'.split(' ').map((word, index) => (
-              <span key={`${word}-${index}`} className="word-split-word" aria-hidden="true">
-                {word}{' '}
+              <span key={`${word}-${index}`} aria-hidden="true">
+                <span className="word-split-word">{word}</span>{' '}
               </span>
             ))}
           </h2>
@@ -620,7 +563,7 @@ export function HomePage() {
                   <div className="review-header">
                     <div className="review-avatar">
                       {review.avatar ? (
-                        <img src={review.avatar} alt={review.name} className="review-avatar-img" />
+                        <img src={review.avatar} alt={review.name} className="review-avatar-img" loading="lazy" decoding="async" />
                       ) : (
                         review.name.charAt(0)
                       )}
