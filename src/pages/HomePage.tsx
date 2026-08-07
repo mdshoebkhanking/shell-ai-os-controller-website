@@ -22,8 +22,7 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { InternalAIFabricBackground } from '../components/InternalAIFabricBackground'
-import { LaptopStory } from '../components/LaptopMockup'
-import { ShellCoreScene } from '../components/ShellCoreScene'
+import { LaptopMockup, LaptopStory } from '../components/LaptopMockup'
 import { githubRepoUrl, platformCards, screenStates } from '../data'
 import { useLatestReleaseContent } from '../release'
 
@@ -412,13 +411,7 @@ export function HomePage() {
 
         <div className="hero-visual">
           <div className="energy-field" />
-          <div className="shell-core-wrap">
-            <ShellCoreScene />
-            <div className="screen-status shell-core-glass-panel">
-              <span>{heroStatus.label}</span>
-              <strong>{heroStatus.title}</strong>
-            </div>
-          </div>
+          <LaptopMockup />
         </div>
       </section>
 
