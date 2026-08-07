@@ -19,8 +19,8 @@ import {
 } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LaptopMockup, LaptopStory } from '../components/LaptopMockup'
-import { TubesBackground } from '../components/TubesBackground'
 import { githubRepoUrl, platformCards, screenStates } from '../data'
 import { useLatestReleaseContent } from '../release'
 
@@ -118,7 +118,6 @@ export function HomePage() {
   return (
     <main>
       <section id="download" className="hero-section">
-        <TubesBackground className="hero-tubes-layer" />
         <div className="hero-copy">
           <div className="badge-row">
             <span>Open source</span>
