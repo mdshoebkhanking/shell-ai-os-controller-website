@@ -281,8 +281,6 @@ export function HomePage() {
         </div>
 
         <div className="hero-visual">
-          {/* Single clean premium backdrop — unified glass panel */}
-          <div className="hero-card-backdrop" aria-hidden="true" />
           <LaptopMockup activeId="dashboard" />
         </div>
       </section>

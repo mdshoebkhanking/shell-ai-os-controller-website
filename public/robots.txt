@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+Sitemap: https://shell-ai-os-controller-website-main.vercel.app/sitemap.xml
